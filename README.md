@@ -2,9 +2,20 @@
 
 **WedPlan** is a role-based wedding planning platform. Couples discover wedding services and send booking requests. Vendors publish services, manage requests and can upgrade to Premium through Stripe. Admins moderate users, services and payments.
 
-- **Live website:** _coming soon_
+- **Live website:** https://wedplan-client-drab.vercel.app
+- **Live API:** https://wedplan-server-phi.vercel.app
 - **Client repository:** https://github.com/FahimF22/wedplan-client
 - **Server repository:** https://github.com/FahimF22/wedplan-server
+
+## Demo credentials
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@wedplan.app | Admin@1234 |
+| Vendor | vendor@wedplan.app | Vendor@1234 |
+| Customer | customer@wedplan.app | Customer@1234 |
+
+Stripe test card: **4242 4242 4242 4242**, any future date, any CVC.
 
 ## Important features
 
