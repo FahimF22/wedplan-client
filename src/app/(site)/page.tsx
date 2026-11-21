@@ -2,6 +2,11 @@ import { Suspense } from "react";
 import { Hero } from "@/components/home/Hero";
 import { FeaturedServices } from "@/components/home/FeaturedServices";
 import { ServiceCardSkeleton } from "@/components/services/ServiceCard";
+import { Categories } from "@/components/home/Categories";
+import { WhyChoose } from "@/components/home/WhyChoose";
+import { HowItWorks } from "@/components/home/HowItWorks";
+import { Testimonials } from "@/components/home/Testimonials";
+import { CtaBand } from "@/components/home/CtaBand";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +30,11 @@ export default function HomePage() {
       <Suspense fallback={<FeaturedFallback />}>
         <FeaturedServices />
       </Suspense>
+      <Categories />
+      <WhyChoose />
+      <HowItWorks />
+      <Testimonials />
+      <CtaBand />
     </>
   );
 }
