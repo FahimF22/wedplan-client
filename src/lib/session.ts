@@ -1,10 +1,11 @@
 import "server-only";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { auth } from "./auth";
+import { auth, ensureDbConnected } from "./auth";
 
 export async function getSession() {
   try {
+    await ensureDbConnected();
     return await auth.api.getSession({ headers: await headers() });
   } catch {
     return null;

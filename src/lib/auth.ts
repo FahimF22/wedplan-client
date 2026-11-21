@@ -16,6 +16,21 @@ const client =
 globalForMongo._authMongo = client;
 const db = client.db(process.env.DB_NAME || "wedplan");
 
+/**
+ * If an implicit connect ever fails (network blip, cold start), the driver closes the topology but
+ * keeps it attached, so every later query throws MongoTopologyClosedError on that warm instance.
+ * Calling connect() again builds a fresh topology — do it before any auth work.
+ */
+export async function ensureDbConnected() {
+  const topology = (client as unknown as { topology?: { isConnected(): boolean } }).topology;
+  if (topology?.isConnected()) return;
+  try {
+    await client.connect();
+  } catch {
+    await client.connect(); // one retry
+  }
+}
+
 const PUBLIC_ROLES = ["vendor", "customer"];
 const PROTECTED_FIELDS = ["role", "isBlocked", "subscriptionPlan", "subscriptionExpiresAt"];
 
