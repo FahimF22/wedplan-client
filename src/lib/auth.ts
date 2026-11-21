@@ -1,6 +1,6 @@
 import "server-only";
 import { betterAuth } from "better-auth";
-import { APIError } from "better-auth/api";
+import { APIError, createAuthMiddleware } from "better-auth/api";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { nextCookies } from "better-auth/next-js";
 import { jwt } from "better-auth/plugins";
@@ -32,7 +32,8 @@ export async function ensureDbConnected() {
 }
 
 const PUBLIC_ROLES = ["vendor", "customer"];
-const PROTECTED_FIELDS = ["role", "isBlocked", "subscriptionPlan", "subscriptionExpiresAt"];
+const PASSWORD_PATHS = ["/sign-up/email", "/change-password", "/reset-password"];
+const PROTECTED_FIELDS =["role", "isBlocked", "subscriptionPlan", "subscriptionExpiresAt"];
 
 export const auth = betterAuth({
   appName: "WedPlan",
@@ -76,6 +77,20 @@ export const auth = betterAuth({
 
   // Profile changes go through the Express API (field whitelist); block Better Auth's own update routes.
   disabledPaths: ["/update-user", "/delete-user", "/change-email"],
+
+  // Enforce the password policy on the server too (the form check alone can be bypassed).
+  hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      if (!PASSWORD_PATHS.includes(ctx.path)) return;
+      const body = (ctx.body ?? {}) as { password?: unknown; newPassword?: unknown };
+      const pw = String(body.newPassword ?? body.password ?? "");
+      if (pw.length < 6 || !/[A-Z]/.test(pw) || !/[a-z]/.test(pw)) {
+        throw new APIError("BAD_REQUEST", {
+          message: "Password must be at least 6 characters and include an uppercase and a lowercase letter",
+        });
+      }
+    }),
+  },
 
   databaseHooks: {
     user: {
