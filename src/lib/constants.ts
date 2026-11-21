@@ -66,5 +66,12 @@ export const categoryLabel = (value?: string | null) =>
 export const PREMIUM_PRICE = 29;
 export const FREE_SERVICE_LIMIT = 3;
 
-export const formatPrice = (n: number, currency = "USD") =>
+/** Event dates are stored as UTC midnight — always render them in UTC so the day never shifts. */
+export const formatEventDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", { timeZone: "UTC", weekday: "short", year: "numeric", month: "short", day: "numeric" });
+
+export const formatDate = (iso?: string | null) =>
+  iso ? new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "—";
+
+export const formatPrice =(n: number, currency = "USD") =>
   new Intl.NumberFormat("en-US", { style: "currency", currency, maximumFractionDigits: 0 }).format(n);
