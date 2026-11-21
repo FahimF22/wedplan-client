@@ -94,7 +94,10 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="container-page flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/60 sm:flex-row">
           <p>© {new Date().getFullYear()} WedPlan. All rights reserved.</p>
-          <p>Made with care for couples and wedding professionals.</p>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white">Terms of Service</Link>
+          </div>
         </div>
       </div>
     </footer>
