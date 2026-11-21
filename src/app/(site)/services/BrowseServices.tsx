@@ -33,10 +33,9 @@ export function BrowseServices() {
   const sort = params.get("sort") ?? "featured";
   const page = Math.max(1, Number(params.get("page")) || 1);
 
+  // inputs start from the URL; every URL change on this page comes from these inputs
   const [searchInput, setSearchInput] = useState(search);
   const [locationInput, setLocationInput] = useState(location);
-  useEffect(() => setSearchInput(search), [search]);
-  useEffect(() => setLocationInput(location), [location]);
 
   const setParams = (patch: Record<string, string | null>, resetPage = true) => {
     const next = new URLSearchParams(params.toString());
